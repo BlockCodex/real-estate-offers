@@ -10,13 +10,35 @@ contract TestIdentity {
 
 
   // Testing the setIdentity() function
-  function testSetIdentity() {
-    bytes32 param = "firstidentity";
-    bytes32 returnHash = identity.setIdentity(1,param);
+  function testSetIdentity() public {
+    bytes32 param1 = "firstidentityhash";
+    bytes32 returnHash1 = identity.setIdentity(1,param1);
 
-    bytes32 expected = "firstidentity";
+    bytes32 param2 = "secondidentityhash";
+    bytes32 returnHash2 = identity.setIdentity(2,param2);
 
-    Assert.equal(returnHash, expected, "Identity for 1 is firstidentity");
+    bytes32 expected1 = "firstidentityhash";
+
+    bytes32 expected2 = "secondidentityhash";
+
+    Assert.equal(returnHash1, expected1, "Identity for 1 is firstidentityhash");
+    Assert.equal(returnHash2, expected2, "Identity for 2 is secondidentityhash");
+
   }
+
+  // Testing the setIdentity() function
+  function testGetIdentity() public {
+
+    bytes32 retrievedHash1 = identity.getIdentity(1);
+    bytes32 expected1 = "firstidentityhash";
+
+    bytes32 retrievedHash2 = identity.getIdentity(2);
+    bytes32 expected2 = "secondidentityhash";
+
+    Assert.equal(retrievedHash1, expected1, "Identity for 1 is firstidentityhash");
+    Assert.equal(retrievedHash2, expected2, "Identity for 2 is secondidentityhash");
+
+  }
+
 
 }
