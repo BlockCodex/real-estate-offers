@@ -2,27 +2,25 @@ pragma solidity ^0.4.4;
 
 contract Identity {
   //bytes32 [16] public identities;
-  mapping(uint => bytes32) public identities;
+  mapping(address => Claim[15]) public identities;
 
-  struct Multihash {
-    bytes32 hash;
-    uint8 hash_function;
-    uint8 size;
+  struct Claim {
+    bytes32 claimHash;
+    address validator;
   }
 
   // set an Identity
-  function setIdentity(uint profileID, bytes32 userHash) public returns (bytes32) {
+  function setIdentity(address user, uint index, bytes32 value) payable public returns (bytes32) {
     //require(profileID >= 0 && profileID <= 15);
 
-    identities[profileID] = userHash;
-
-    return userHash;
+    (identities[user])[index].claimHash = value;
+    (identities[user])[index].validator = msg.sender;
   }
 
   // Retrieving the userHash
-  function getIdentity(uint profileID) public constant returns (bytes32) {
+  function getIdentity(address user, uint index) public constant returns (bytes32) {
     //require(profileID >= 0 && profileID <= 15);
 
-    return identities[profileID];
+    return identities[user][index].claimHash;
   }
 }

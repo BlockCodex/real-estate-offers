@@ -7,36 +7,26 @@ import "../contracts/Identity.sol";
 contract TestIdentity {
 
   Identity identity = Identity(DeployedAddresses.Identity());
+  address constant testUserAddress = 0x699A58Ef59e924325A6F87Db3bD213A84e8c9fF8;
+  bytes32 constant firstidentityhash = "firstidentityhash";
+  bytes32 constant secondidentityhash = "secondidentityhash";
 
-
-  // Testing the setIdentity() function
   function testSetIdentity() public {
-    bytes32 param1 = "firstidentityhash";
-    bytes32 returnHash1 = identity.setIdentity(1,param1);
+    identity.setIdentity(testUserAddress, 0, firstidentityhash);
+    identity.setIdentity(testUserAddress, 1 ,secondidentityhash);
 
-    bytes32 param2 = "secondidentityhash";
-    bytes32 returnHash2 = identity.setIdentity(2,param2);
-
-    bytes32 expected1 = "firstidentityhash";
-
-    bytes32 expected2 = "secondidentityhash";
-
-    Assert.equal(returnHash1, expected1, "Identity for 1 is firstidentityhash");
-    Assert.equal(returnHash2, expected2, "Identity for 2 is secondidentityhash");
-
+    var (firstReturnHash, returnAddress1) = identity.identities(testUserAddress, 0);
+    var (secondReturnHash, returnAddress2) = identity.identities(testUserAddress, 1);
+    Assert.equal(firstReturnHash, firstidentityhash, "Identity for 0 is firstidentityhash");
+    Assert.equal(secondReturnHash, secondidentityhash, "Identity for 1 is secondidentityhash");
   }
 
-  // Testing the setIdentity() function
   function testGetIdentity() public {
+    bytes32 firstRetrievedHash = identity.getIdentity(testUserAddress, 0);
+    bytes32 secondRetrievedHash = identity.getIdentity(testUserAddress, 1);
 
-    bytes32 retrievedHash1 = identity.getIdentity(1);
-    bytes32 expected1 = "firstidentityhash";
-
-    bytes32 retrievedHash2 = identity.getIdentity(2);
-    bytes32 expected2 = "secondidentityhash";
-
-    Assert.equal(retrievedHash1, expected1, "Identity for 1 is firstidentityhash");
-    Assert.equal(retrievedHash2, expected2, "Identity for 2 is secondidentityhash");
+    Assert.equal(firstRetrievedHash, firstidentityhash, "Identity for 1 is firstidentityhash");
+    Assert.equal(secondRetrievedHash, secondidentityhash, "Identity for 2 is secondidentityhash");
 
   }
 
